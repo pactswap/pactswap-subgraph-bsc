@@ -4,21 +4,9 @@
   "description": "PactSwap Subgraph BSC",
   "author": "PactSwap",
   "license": "MIT",
-  "scripts": {
-    "codegen:blocks": "graph codegen subgraphs/blocks.yaml",
-    "codegen:exchange": "graph codegen subgraphs/exchange.yaml",
-    "codegen:pairs": "graph codegen subgraphs/pairs.yaml",
-    "codegen:prediction": "graph codegen subgraphs/prediction.yaml",
-    "build:blocks": "graph build subgraphs/blocks.yaml",
-    "build:exchange": "graph build subgraphs/exchange.yaml",
-    "build:pairs": "graph build subgraphs/pairs.yaml",
-    "deploy:blocks": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pactswap/blocks subgraphs/blocks.yaml",
-    "deploy:exchange": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pactswap/exchange subgraphs/exchange.yaml",
-    "deploy:pairs": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pactswap/pairs subgraphs/pairs.yaml"
-  },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0"
+    "@graphprotocol/graph-cli": "^0.22.0",
+    "@graphprotocol/graph-ts": "^0.22.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.0",

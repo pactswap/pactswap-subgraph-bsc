@@ -1,6 +1,6 @@
-import { PactSwapFactory, Pair, Token, Bundle } from "../../generated/schema";
-import { Pair as PairTemplate } from "../../generated/templates";
-import { PairCreated } from "../../generated/Factory/Factory";
+import { PactSwapFactory, Pair, Token, Bundle } from "../generated/schema";
+import { Pair as PairTemplate } from "../generated/templates";
+import { PairCreated } from "../generated/Factory/Factory";
 import {
     FACTORY_ADDRESS,
     ZERO_BD,
@@ -23,7 +23,7 @@ export function handlePairCreated(event: PairCreated): void {
         factory.untrackedVolumeUSD = ZERO_BD;
         factory.totalLiquidityUSD = ZERO_BD;
 
-        let bundle = new Bundle("1");
+        const bundle = new Bundle("1");
         bundle.bnbPrice = ZERO_BD;
         bundle.save();
     }
@@ -35,7 +35,7 @@ export function handlePairCreated(event: PairCreated): void {
         token0 = new Token(event.params.token0.toHex());
         token0.name = fetchTokenName(event.params.token0);
         token0.symbol = fetchTokenSymbol(event.params.token0);
-        let decimals = fetchTokenDecimals(event.params.token0);
+        const decimals = fetchTokenDecimals(event.params.token0);
         if (decimals === null) {
             return;
         }
@@ -55,7 +55,7 @@ export function handlePairCreated(event: PairCreated): void {
         token1 = new Token(event.params.token1.toHex());
         token1.name = fetchTokenName(event.params.token1);
         token1.symbol = fetchTokenSymbol(event.params.token1);
-        let decimals = fetchTokenDecimals(event.params.token1);
+        const decimals = fetchTokenDecimals(event.params.token1);
         if (decimals === null) {
             return;
         }
@@ -70,7 +70,7 @@ export function handlePairCreated(event: PairCreated): void {
         token1.save();
     }
 
-    let pair = new Pair(event.params.pair.toHex()) as Pair;
+    const pair = new Pair(event.params.pair.toHex()) as Pair;
     pair.token0 = token0.id;
     pair.token1 = token1.id;
     pair.name = token0.symbol.concat("-").concat(token1.symbol);

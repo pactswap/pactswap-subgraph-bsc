@@ -2,7 +2,7 @@ specVersion: 0.0.2
 description: Binance Smart Chain blocks
 repository: https://github.com/pactswap
 schema:
-  file: ./blocks.graphql
+  file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: BSCValidatorSet
@@ -12,13 +12,13 @@ dataSources:
       abi: BSCValidatorSet
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ../src/blocks/index.ts
+      file: ./mappings/index.ts
       entities:
         - Block
       abis:
         - name: BSCValidatorSet
-          file: ../abis/BSCValidatorSet.json
+          file: ./abis/BSCValidatorSet.json
       blockHandlers:
         - handler: handleBlock
