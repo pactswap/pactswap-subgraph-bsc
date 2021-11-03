@@ -1,10 +1,11 @@
+/* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { BEP20 } from "../../generated/Factory/BEP20";
 
 export function fetchName(address: Address): string {
-    const contract = BEP20.bind(address);
+    let contract = BEP20.bind(address);
 
-    const nameResult = contract.try_name();
+    let nameResult = contract.try_name();
     if (!nameResult.reverted) {
         return nameResult.value;
     }
@@ -13,9 +14,9 @@ export function fetchName(address: Address): string {
 }
 
 export function fetchSymbol(address: Address): string {
-    const contract = BEP20.bind(address);
+    let contract = BEP20.bind(address);
 
-    const symbolResult = contract.try_symbol();
+    let symbolResult = contract.try_symbol();
     if (!symbolResult.reverted) {
         return symbolResult.value;
     }
@@ -24,12 +25,12 @@ export function fetchSymbol(address: Address): string {
 }
 
 export function fetchDecimals(address: Address): BigInt {
-    const contract = BEP20.bind(address);
+    let contract = BEP20.bind(address);
 
-    const decimalResult = contract.try_decimals();
+    let decimalResult = contract.try_decimals();
     if (!decimalResult.reverted) {
         return BigInt.fromI32(decimalResult.value);
     }
 
-    return BigInt.fromI32(0);
+    return null;
 }

@@ -1,21 +1,22 @@
+/* eslint-disable prefer-const */
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { Pair, Token, Bundle } from "../generated/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./utils";
 
-const WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-const WBNB_BUSD_PAIR = "0x6d056f886d6a33b1bfa8911b542be1f24438ab59";
-const USDT_WBNB_PAIR = "";
+let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
+let WBNB_BUSD_PAIR = "0x6d056f886d6a33b1bfa8911b542be1f24438ab59";
+let USDT_WBNB_PAIR = "";
 
 export function getBnbPriceInUSD(): BigDecimal {
     // fetch eth prices for each stablecoin
-    const usdtPair = Pair.load(USDT_WBNB_PAIR); // usdt is token0
-    const busdPair = Pair.load(WBNB_BUSD_PAIR); // busd is token1
+    let usdtPair = Pair.load(USDT_WBNB_PAIR); // usdt is token0
+    let busdPair = Pair.load(WBNB_BUSD_PAIR); // busd is token1
 
     if (busdPair !== null && usdtPair !== null) {
-        const totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1);
+        let totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1);
         if (totalLiquidityBNB.notEqual(ZERO_BD)) {
-            const busdWeight = busdPair.reserve0.div(totalLiquidityBNB);
-            const usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
+            let busdWeight = busdPair.reserve0.div(totalLiquidityBNB);
+            let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
             return busdPair.token1Price.times(busdWeight).plus(usdtPair.token0Price.times(usdtWeight));
         } else {
             return ZERO_BD;
@@ -30,7 +31,7 @@ export function getBnbPriceInUSD(): BigDecimal {
 }
 
 // token where amounts should contribute to tracked volume and liquidity
-const WHITELIST: string[] = [
+let WHITELIST: string[] = [
     "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
     "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
     "0x55d398326f99059ff775485246999027b3197955", // USDT
@@ -42,7 +43,7 @@ const WHITELIST: string[] = [
 ];
 
 // minimum liquidity for price to get tracked
-const MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
+// let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
 
 /**
  * Search through graph to find derived BNB per token.
@@ -54,16 +55,16 @@ export function findBnbPerToken(token: Token): BigDecimal {
     }
     // loop through whitelist and check if paired with any
     for (let i = 0; i < WHITELIST.length; ++i) {
-        const pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+        let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
         if (pairAddress.toHex() != ADDRESS_ZERO) {
-            const pair = Pair.load(pairAddress.toHex());
-            if (pair!.token0 == token.id && pair!.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-                const token1 = Token.load(pair!.token1);
-                return pair!.token1Price.times(token1!.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
+            let pair = Pair.load(pairAddress.toHex());
+            if (pair.token0 == token.id) {
+                let token1 = Token.load(pair.token1);
+                return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
             }
-            if (pair!.token1 == token.id && pair!.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-                const token0 = Token.load(pair!.token0);
-                return pair!.token0Price.times(token0!.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
+            if (pair.token1 == token.id) {
+                let token0 = Token.load(pair.token0);
+                return pair.token0Price.times(token0.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
             }
         }
     }
@@ -83,8 +84,8 @@ export function getTrackedVolumeUSD(
     tokenAmount1: BigDecimal,
     token1: Token
 ): BigDecimal {
-    const price0 = token0.derivedBNB!.times(bundle.bnbPrice);
-    const price1 = token1.derivedBNB!.times(bundle.bnbPrice);
+    let price0 = token0.derivedBNB.times(bundle.bnbPrice);
+    let price1 = token1.derivedBNB.times(bundle.bnbPrice);
 
     // both are whitelist tokens, take average of both amounts
     if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
@@ -118,8 +119,8 @@ export function getTrackedLiquidityUSD(
     tokenAmount1: BigDecimal,
     token1: Token
 ): BigDecimal {
-    const price0 = token0.derivedBNB!.times(bundle.bnbPrice);
-    const price1 = token1.derivedBNB!.times(bundle.bnbPrice);
+    let price0 = token0.derivedBNB.times(bundle.bnbPrice);
+    let price1 = token1.derivedBNB.times(bundle.bnbPrice);
 
     // both are whitelist tokens, take average of both amounts
     if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {

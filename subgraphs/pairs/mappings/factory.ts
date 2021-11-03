@@ -1,14 +1,15 @@
+/* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Factory, Pair, Token } from "../generated/schema";
 import { PairCreated } from "../generated/Factory/Factory";
 import { fetchDecimals, fetchName, fetchSymbol } from "./utils/bep20";
 
 // Constants
-const FACTORY_ADDRESS = "0x4cBAF01d645a233D11CD5A19939387A94d7f2f02";
+let FACTORY_ADDRESS = "0x4cBAF01d645a233D11CD5A19939387A94d7f2f02";
 
 // BigNumber-like references
-const ZERO_BI = BigInt.fromI32(0);
-const ONE_BI = BigInt.fromI32(1);
+let ZERO_BI = BigInt.fromI32(0);
+let ONE_BI = BigInt.fromI32(1);
 
 export function handlePairCreated(event: PairCreated): void {
     let factory = Factory.load(FACTORY_ADDRESS);
@@ -44,7 +45,7 @@ export function handlePairCreated(event: PairCreated): void {
     }
 
     // Pair
-    const pair = new Pair(event.params.pair.toHex());
+    let pair = new Pair(event.params.pair.toHex());
     pair.token0 = token0.id;
     pair.token1 = token1.id;
     pair.name = token0.symbol.concat("-").concat(token1.symbol);
