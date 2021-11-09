@@ -114,6 +114,10 @@ type Mint @entity {
     # populated from the primary Transfer event
     to: Bytes!
     liquidity: BigDecimal!
+    # allow indexing by tokens
+    token0: Token!
+    # allow indexing by tokens
+    token1: Token!
 
     # populated from the Mint event
     sender: Bytes
@@ -134,6 +138,11 @@ type Burn @entity {
     transaction: Transaction!
     timestamp: BigInt! # need this to pull recent txns for specific token or pair
     pair: Pair!
+
+    # allow indexing by tokens
+    token0: Token!
+    # allow indexing by tokens
+    token1: Token!
 
     # populated from the primary Transfer event
     liquidity: BigDecimal!
@@ -161,7 +170,10 @@ type Swap @entity {
     transaction: Transaction!
     timestamp: BigInt! # need this to pull recent txns for specific token or pair
     pair: Pair!
-
+    # allow indexing by tokens
+    token0: Token!
+    # allow indexing by tokens
+    token1: Token!
     # populated from the Swap event
     sender: Bytes!
     from: Bytes! # the EOA that initiated the txn
